@@ -1,72 +1,40 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ext="clr-namespace:OrientationTest.Extensions"
+             x:Name="MainPageRef"
              x:Class="OrientationTest.MainPage">
-    <ContentPage.Resources>
-        <Style x:Key="OrientationBackground"
-                TargetType="VerticalStackLayout">
-            <Setter Property="VisualStateManager.VisualStateGroups">
-                <VisualStateGroupList>
-                    <VisualStateGroup>
-                        <VisualState x:Name="Portrait">
-                            <VisualState.StateTriggers>
-                                <OrientationStateTrigger Orientation="Portrait" />
-                                <StateTrigger IsActiveChanged="StateTrigger_IsActiveChanged"/>
-                            </VisualState.StateTriggers>
-                            <VisualState.Setters>
-                                <Setter Property="WidthRequest" Value="{Binding ScreenWidth}" />
-                            </VisualState.Setters>
-                        </VisualState>
-                        <VisualState x:Name="Landscape">
-                            <VisualState.StateTriggers>
-                                <OrientationStateTrigger Orientation="Landscape" />
-                            </VisualState.StateTriggers>
-                            <VisualState.Setters>
-                                <Setter Property="WidthRequest" Value="400" />
-                            </VisualState.Setters>
-                        </VisualState>
-                    </VisualStateGroup>
-                </VisualStateGroupList>
-            </Setter>
-        </Style>
-
-        <Style x:Key="OrientationBoxView"
-        TargetType="BoxView">
-            <Setter Property="VisualStateManager.VisualStateGroups">
-                <VisualStateGroupList>
-                    <VisualStateGroup>
-                        <VisualState x:Name="Portrait">
-                            <VisualState.StateTriggers>
-                                <OrientationStateTrigger Orientation="Portrait" />
-                                <StateTrigger IsActiveChanged="StateTrigger_IsActiveChanged"/>
-                            </VisualState.StateTriggers>
-                            <VisualState.Setters>
-                                <Setter Property="IsVisible" Value="False" />
-                            </VisualState.Setters>
-                        </VisualState>
-                        <VisualState x:Name="Landscape">
-                            <VisualState.StateTriggers>
-                                <OrientationStateTrigger Orientation="Landscape" />
-                            </VisualState.StateTriggers>
-                            <VisualState.Setters>
-                                <Setter Property="IsVisible" Value="True" />
-                            </VisualState.Setters>
-                        </VisualState>
-                    </VisualStateGroup>
-                </VisualStateGroupList>
-            </Setter>
-        </Style>
-
-    </ContentPage.Resources>
 
     <ScrollView>
-        <HorizontalStackLayout>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <OnIdiom>
+                    <OnIdiom.Phone>
+                        <ColumnDefinition Width="*"/>
+                    </OnIdiom.Phone>
+                    <OnIdiom.Desktop>
+                        <ColumnDefinition Width="400,*"/>
+                    </OnIdiom.Desktop>
+                    <OnIdiom.Tablet>
+                        <ext:OnOrientation>
+                            <ext:OnOrientation.Landscape>
+                                <ColumnDefinition Width="400,*"/>
+                            </ext:OnOrientation.Landscape>
+                            <ext:OnOrientation.Portrait>
+                                <ColumnDefinition Width="*"/>
+                            </ext:OnOrientation.Portrait>
+                        </ext:OnOrientation>
+                    </OnIdiom.Tablet>
+                </OnIdiom>
+            </Grid.ColumnDefinitions>
             <VerticalStackLayout
-                Style="{StaticResource OrientationBackground}"
+                Grid.Column="0"
+                WidthRequest="400"
                 HorizontalOptions="Center"
                 Padding="30,0"
                 Spacing="25">
-                    <Image
+
+                <Image
                     Source="dotnet_bot.png"
                     HeightRequest="185"
                     Aspect="AspectFit"
@@ -98,9 +66,9 @@
             <BoxView VerticalOptions="Fill"
                      HorizontalOptions="Fill"
                      BackgroundColor="LightPink"
-                     WidthRequest="{Binding BoxViewWidth}"
-                     Style="{StaticResource OrientationBoxView}"/>
-        </HorizontalStackLayout>
+                     IsVisible="{OnIdiom Phone=False, Desktop=True, Tablet={ext:OnOrientation Portrait=False, Landscape=True}}"
+                     Grid.Column="1"/>
+        </Grid>
     </ScrollView>
 
 </ContentPage>
