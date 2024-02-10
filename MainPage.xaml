@@ -6,7 +6,7 @@
              x:Class="OrientationTest.MainPage">
 
     <ScrollView>
-        <Grid>
+        <Grid ColumnDefinitions="{OnIdiom Phone=*, Desktop='400,*', Tablet={ext:OnOrientation Portrait='*', Landscape='400,*', Default='*', TypeConverter={x:Type ColumnDefinitionCollectionTypeConverter}}}">
             <Grid.ColumnDefinitions>
                 <OnIdiom>
                     <OnIdiom.Phone>
