@@ -82,13 +82,13 @@
             if (this.Width > this.Height)
             {
                 Console.WriteLine("[OrientationState] Going Landscape");
-                VisualStateManager.GoToState(VSL, "Landscape");
+                VisualStateManager.GoToState(LayoutGrid, "Landscape");
                 VisualStateManager.GoToState(BV, "Landscape");
             }
             else
             {
                 Console.WriteLine("[OrientationState] Going Portrait");
-                VisualStateManager.GoToState(VSL, "Portrait");
+                VisualStateManager.GoToState(LayoutGrid, "Portrait");
                 VisualStateManager.GoToState(BV, "Portrait");
             }
         }
