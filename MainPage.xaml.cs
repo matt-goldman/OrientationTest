@@ -30,6 +30,12 @@
         {
             InitializeComponent();
             BindingContext = this;
+            
+            if (DeviceInfo.Current.Platform == DevicePlatform.iOS && DeviceInfo.Current.Idiom == DeviceIdiom.Tablet)
+            {
+                //DeviceDisplay.MainDisplayInfoChanged += OnSizeChanged;
+                this.SizeChanged += OnSizeChanged;
+            }
         }
 
         private void OnCounterClicked(object sender, EventArgs e)
@@ -65,6 +71,26 @@
             base.OnSizeAllocated(width, height);
             ScreenWidth = width;
             BoxViewWidth = width - 400;
+        }
+        
+        private void OnSizeChanged(object? sender, EventArgs e)
+        {
+            Console.WriteLine("[OrientationState] OnSizeChanged");
+            
+            Console.WriteLine($"[OrientationState] Current dimensions - Height: {this.Height}, Width: {this.Width}");
+            
+            if (this.Width > this.Height)
+            {
+                Console.WriteLine("[OrientationState] Going Landscape");
+                VisualStateManager.GoToState(VSL, "Landscape");
+                VisualStateManager.GoToState(BV, "Landscape");
+            }
+            else
+            {
+                Console.WriteLine("[OrientationState] Going Portrait");
+                VisualStateManager.GoToState(VSL, "Portrait");
+                VisualStateManager.GoToState(BV, "Portrait");
+            }
         }
     }
 
